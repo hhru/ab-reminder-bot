@@ -17,6 +17,7 @@ slack_settings = {
     'slack_hook_url': 'hooks.slack.com',
     'channel_hook': '',  # channel hook URL
     'oauth_token': '',  # oAUTH authorization token
+    'email_override': {},  # dict of confluence_logins to emails mapping
 }
 
 connection_connect_timeout_s = 0.5
