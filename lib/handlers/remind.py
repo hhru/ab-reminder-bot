@@ -63,7 +63,10 @@ def remind_users(date):
 
         users_to_remind_slack = []
         for user in users_to_remind:
-            corporate_email = '{user_name}@hh.ru'.format(user_name=user['userName'])
+            if user['userName'] in bot_settings.slack_settings['email_override']:
+                corporate_email = bot_settings.slack_settings['email_override'][user['userName']]
+            else:
+                corporate_email = '{user_name}@hh.ru'.format(user_name=user['userName'])
             if corporate_email in slack_email_to_name_map:
                 users_to_remind_slack.append(
                     '<@{slack_username}>'.format(slack_username=slack_email_to_name_map[corporate_email])

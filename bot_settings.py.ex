@@ -17,6 +17,19 @@ slack_settings = {
     'slack_hook_url': 'hooks.slack.com',
     'channel_hook': '',  # channel hook URL
     'oauth_token': '',  # oAUTH authorization token
+    'email_override': {},  # dict of confluence_logins to emails mapping
+}
+
+# templates mapping to override default values, if none or not exists - values will be taken from lib/templates.py
+templates_overrides = {
+    'TITLE_TEMPLATE': u'Front-end AB {date}',
+    'PAGE_TEMPLATE': None,
+    'TEAM_ROW_TEMPLATE': None,
+    'USER_ROW_TEMPLATE': None,
+    'SLACK_PAGE_MESSAGE_TEMPLATE': None,
+    'SLACK_REMIND_MESSAGE_TEMPLATE': None,
+    'SLACK_REMIND_ALL_CHECKED_TEMPLATE': None,
+    'SLACK_REMIND_HAS_UNCHECKED_TEMPLATE': None,
 }
 
 connection_connect_timeout_s = 0.5
