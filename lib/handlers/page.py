@@ -28,7 +28,7 @@ def generate_page(date):
             rows += USER_ROW_TEMPLATE.format(task_id=task_id, user_key=user['userKey'])
             task_id += 1
 
-    page = PAGE_TEMPLATE.format(rows=rows)
+    page = PAGE_TEMPLATE.format(date=date, rows=rows)
 
     result = confluence.post_page(
         TITLE_TEMPLATE.format(date=date),
