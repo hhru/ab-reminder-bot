@@ -6,7 +6,7 @@ def is_override_available(template_name):
 
 
 TITLE_TEMPLATE = templates_overrides['TITLE_TEMPLATE'] if is_override_available('TITLE_TEMPLATE') else \
-    u'{date} Технологизация Android'
+    u'{date} Технологизация iOS'
 
 
 PAGE_TEMPLATE = templates_overrides['PAGE_TEMPLATE'] if is_override_available('PAGE_TEMPLATE') else \
@@ -48,7 +48,7 @@ PAGE_TEMPLATE = templates_overrides['PAGE_TEMPLATE'] if is_override_available('P
         </tbody>
     </table>
     <p>
-        <strong>Не забудьте добавить метку 'технологизация_android' к странице!</strong>
+        <strong>Не забудьте добавить метку 'технологизация_ios' к странице!</strong>
     </p>
     """
 
