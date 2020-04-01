@@ -3,3 +3,4 @@
 *.iml
 users.json
 bot_settings.py
+*.pyc
