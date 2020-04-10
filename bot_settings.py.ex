@@ -1,4 +1,9 @@
 import logging
+from lib.utils import get_nearest_day_of_week
+
+defaults = {
+    'date': get_nearest_day_of_week(4),  # nearest friday
+}
 
 confluence_settings = {
     'jira_base_url': 'jira.hh.ru',

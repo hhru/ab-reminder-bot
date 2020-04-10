@@ -7,9 +7,12 @@ from lib.api_clients.confluence import ConfluenceClient
 from lib.api_clients.slack import SlackClient
 from lib.templates import TITLE_TEMPLATE, SLACK_REMIND_MESSAGE_TEMPLATE, SLACK_REMIND_ALL_CHECKED_TEMPLATE, \
     SLACK_REMIND_HAS_UNCHECKED_TEMPLATE
+from lib.utils import get_usable_date
 
 
-def remind_users(date):
+def remind_users(params_date=None):
+    date = get_usable_date(params_date, bot_settings.defaults)
+
     confluence = ConfluenceClient(
         bot_settings.confluence_settings['login'],
         bot_settings.confluence_settings['password']
