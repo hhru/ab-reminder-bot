@@ -1,8 +1,11 @@
 import sys
+import urllib3
 
 from lib.handlers.users import generate_users
 from lib.handlers.page import generate_page
 from lib.handlers.remind import remind_users
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 AVAILABLE_COMMANDS = {
     'users': {
