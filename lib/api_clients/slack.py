@@ -7,17 +7,28 @@ logger = bot_settings.logging.getLogger(__name__)
 
 class SlackClient:
     def get_users_list(self):
-        response = requests.get(
-            'https://{host}/api/users.list'.format(host=bot_settings.slack_settings['slack_hook_url']),
-            {
-                'token': bot_settings.slack_settings['oauth_token']
-            }
-        )
+        cursor = ''
+        slack_members = []
+        while True:
+            response = requests.get(
+                'https://{host}/api/users.list'.format(host=bot_settings.slack_settings['slack_hook_url']),
+                {
+                    'token': bot_settings.slack_settings['oauth_token'],
+                    'cursor': cursor,
+                }
+            )
 
-        if response.status_code != 200:
-            raise Exception(response.content)
+            if response.status_code != 200:
+                raise Exception(response.content)
 
-        return response.json()
+            json_data = response.json()
+            slack_members += json_data['members']
+            cursor = json_data['response_metadata']['next_cursor']
+
+            if not cursor:
+                break
+
+        return slack_members
 
     def post_message(self, message):
         return self.post(

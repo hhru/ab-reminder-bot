@@ -60,7 +60,7 @@ def remind_users(params_date=None):
         slack_users_list = slack.get_users_list()
         slack_email_to_name_map = {}
 
-        for slack_member in slack_users_list['members']:
+        for slack_member in slack_users_list:
             if 'email' in slack_member['profile'] and slack_member['profile']['email'] != '':
                 slack_email_to_name_map.update({slack_member['profile']['email']: slack_member['name']})
 
