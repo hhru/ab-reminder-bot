@@ -6,5 +6,6 @@ COPY . .
 
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 RUN pip3 install -r ./requirements.txt
+RUN python run.py users
 
 ENTRYPOINT ["python","./run.py"]
