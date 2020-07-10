@@ -1,4 +1,5 @@
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 import bot_settings
 
@@ -7,6 +8,7 @@ logger = bot_settings.logging.getLogger(__name__)
 
 class SlackClient:
     def get_users_list(self):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         response = requests.get(
             'https://{host}/api/users.list'.format(host=bot_settings.slack_settings['slack_hook_url']),
             {
@@ -20,6 +22,7 @@ class SlackClient:
         return response.json()
 
     def post_message(self, message):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         return self.post(
             bot_settings.slack_settings['slack_hook_url'],
             bot_settings.slack_settings['channel_hook'],
@@ -27,6 +30,7 @@ class SlackClient:
         )
 
     def post(self, host, url, json_data):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         response = requests.post(
             'https://{host}{url}'.format(host=host, url=url),
             None,

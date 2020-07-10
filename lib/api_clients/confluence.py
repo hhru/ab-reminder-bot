@@ -1,5 +1,6 @@
 import requests
 from requests.auth import HTTPBasicAuth
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from urllib.parse import quote
 
 import bot_settings
@@ -54,6 +55,7 @@ class ConfluenceClient:
         )
 
     def get(self, host, url):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         full_url = 'https://{host}{url}'.format(host=host, url=url)
         response = requests.get(
             full_url,
@@ -75,6 +77,7 @@ class ConfluenceClient:
         return response.json()
 
     def post(self, host, url, json_data):
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
         full_url = 'https://{host}{url}'.format(host=host, url=url)
         response = requests.post(
             full_url,
