@@ -6,25 +6,50 @@ def is_override_available(template_name):
 
 
 TITLE_TEMPLATE = templates_overrides['TITLE_TEMPLATE'] if is_override_available('TITLE_TEMPLATE') else \
-    u'AB {date}'
+    u'{date} Технологизация iOS'
 
 
 PAGE_TEMPLATE = templates_overrides['PAGE_TEMPLATE'] if is_override_available('PAGE_TEMPLATE') else \
     u"""
-    После заполнения своей ячейки отметьте чекбокс рядом со своей фамилией, иначе AB Reminder 
+    <div data-macro-name="details" class="plugin-tabmeta-details conf-macro output-block" data-hasbody="true">
+        <table>
+            <tbody>
+                <tr>
+                    <th>Дата</th>
+                    <td> <span>&nbsp; <time datetime="{date}" class="date-past"> </time> &nbsp;</span> </td>
+                </tr>
+                <tr>
+                    <th>Докладчики</th>
+                    <td>Вся команда</td>
+                </tr>
+                <tr>
+                    <th>Темы</th>
+                    <td> <ul><li>Что нового</li></ul> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br/>
+    <p>
+    После заполнения своей ячейки отметьте чекбокс рядом со своей фамилией, иначе AB Reminder
     расстроится и пойдет вас искать.
+    </p>
+    <br/>
     <table>
         <thead>
             <tr>
                 <th>Имя</th>
-                <th>Что интересного произошло за неделю<br/>Что планируете делать на следующей</th>
-                <th>Вопросы и ответы<br/>Указывайте имя, когда задаёте вопрос</th>
+                <th>Что интересного произошло за эту неделю<br/>Что планируете делать следующую неделю</th>
+                <th>Комментарии</th>
             </tr>
         </thead>
         <tbody>
             {rows}
         </tbody>
     </table>
+    <p>
+        <strong>Не забудьте добавить метку 'технологизация_ios' к странице!</strong>
+    </p>
     """
 
 TEAM_ROW_TEMPLATE = templates_overrides['TEAM_ROW_TEMPLATE'] if is_override_available('TEAM_ROW_TEMPLATE') else \
@@ -41,7 +66,7 @@ USER_ROW_TEMPLATE = templates_overrides['USER_ROW_TEMPLATE'] if is_override_avai
                     <ac:task-body>
                         <ac:link><ri:user ri:userkey="{user_key}" /></ac:link>
                     </ac:task-body>
-                </ac:task>    
+                </ac:task>
             </ac:task-list>
         </td>
         <td> </td>
@@ -51,15 +76,15 @@ USER_ROW_TEMPLATE = templates_overrides['USER_ROW_TEMPLATE'] if is_override_avai
 
 SLACK_PAGE_MESSAGE_TEMPLATE = templates_overrides['SLACK_PAGE_MESSAGE_TEMPLATE'] \
     if is_override_available('SLACK_PAGE_MESSAGE_TEMPLATE') \
-    else u'Привет всем :wave:! {date} у вас будет АБ, я подготовил страницу, на которой вам нужно рассказать, ' + \
-         u'чем занимались и чем планируете заниматься в ближайшее время: {url} .\nНайдите там себя, заполните ' + \
-         u'ячейку и отметьте чекбокс напротив своей фамилии. Также, вы можете посмотреть, чем занимались другие, ' + \
-         u'и оставить свои вопросы и коментарии в последней колонке.\nБлиже к АБ я просмотрю неотмеченные ' + \
-         u'чекбоксы, и еще раз напомню об этом тем, кто забыл.'
+    else u'Здоровеньки :wave:! Дедушка Джобс завещал делать технологизацию каждую пятницу, и, особеннов, в эту: {date}. ' + \
+         u'Тут есть страничка, напиши плиз чем занимаешься, чем планируешь заниматься в ближайшее время: {url} .\nНайди там себя, заполни ' + \
+         u'ячейку и отметь чекбокс напротив своей фамилии. Также, можно посмотреть, чем занимались другие, ' + \
+         u'и оставить свои вопросы и коментарии в последней колонке.\nБлиже к технологизации дедушка Джобс ' + \
+         u' проверит чекбоксы, и еще раз напомнит об этом тем, кто забыл.'
 
 SLACK_REMIND_MESSAGE_TEMPLATE = templates_overrides['SLACK_REMIND_MESSAGE_TEMPLATE'] \
     if is_override_available('SLACK_REMIND_MESSAGE_TEMPLATE') \
-    else u'Привет всем :wave:! Совсем скоро у вас будет АБ и, насколько я вижу, вы заполнили страницу ' + \
+    else u'Вечер в хату! Короче, разраб, скоро технологизация и я в благородство играть не буду: расскажешь чем занимался последнее время и чем планируешь заниматься – и мы в расчете. Заодно посмотрим, как быстро у тебя башка после проверок на CI прояснится. А по твоей теме постараюсь разузнать.' + \
          u'{remind_condition}\nВот ссылка на страницу: {url} .'
 
 SLACK_REMIND_ALL_CHECKED_TEMPLATE = templates_overrides['SLACK_REMIND_ALL_CHECKED_TEMPLATE'] \
@@ -69,6 +94,6 @@ SLACK_REMIND_ALL_CHECKED_TEMPLATE = templates_overrides['SLACK_REMIND_ALL_CHECKE
 
 SLACK_REMIND_HAS_UNCHECKED_TEMPLATE = templates_overrides['SLACK_REMIND_HAS_UNCHECKED_TEMPLATE'] \
     if is_override_available('SLACK_REMIND_HAS_UNCHECKED_TEMPLATE') \
-    else u'не полностью :crycat:. Поэтому, как и писал до этого, напоминаю: {users} - вам нужно рассказать о том, ' + \
+    else u'Короч, напоминаю: {users} - вам нужно рассказать о том, ' + \
          u'чем вы занимались последнее время, и чем планируете заниматься. Также, все вы можете оставить вопросы ' + \
-         u'и коментарии написанному другими, в последней колонке.'
+         u'и комментарии написанному другими, в последней колонке.'
