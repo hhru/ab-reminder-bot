@@ -7,10 +7,7 @@ from lib.templates import SLACK_PAGE_MESSAGE_TEMPLATE, TITLE_TEMPLATE, PAGE_TEMP
     TEAM_ROW_TEMPLATE
 from lib.utils import get_usable_date
 
-
-def generate_page(params_date=None):
-    date = get_usable_date(params_date, bot_settings.defaults)
-
+def generate_page(date):
     confluence = ConfluenceClient(
         bot_settings.confluence_settings['login'],
         bot_settings.confluence_settings['password']
@@ -31,7 +28,7 @@ def generate_page(params_date=None):
             rows += USER_ROW_TEMPLATE.format(task_id=task_id, user_key=user['userKey'])
             task_id += 1
 
-    page = PAGE_TEMPLATE.format(rows=rows)
+    page = PAGE_TEMPLATE.format(date=date, rows=rows)
 
     result = confluence.post_page(
         TITLE_TEMPLATE.format(date=date),
@@ -49,4 +46,3 @@ def generate_page(params_date=None):
         date=date,
         url=page_url
     ))
-
