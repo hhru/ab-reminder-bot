@@ -7,7 +7,9 @@ from lib.templates import SLACK_PAGE_MESSAGE_TEMPLATE, TITLE_TEMPLATE, PAGE_TEMP
     TEAM_ROW_TEMPLATE
 from lib.utils import get_usable_date
 
-def generate_page(date):
+def generate_page(params_date=None):
+    date = get_usable_date(params_date, bot_settings.defaults)
+
     confluence = ConfluenceClient(
         bot_settings.confluence_settings['login'],
         bot_settings.confluence_settings['password']
