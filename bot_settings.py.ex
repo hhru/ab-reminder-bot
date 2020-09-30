@@ -12,10 +12,15 @@ confluence_settings = {
     'password': '',  # confluence password
     'space_key': 'HHDEV',  # wiki space key
     'parent_page': 0,  # parent page for created pages
-    'user_role': '',  # FE - Frontend, BE - Backend, TS - QA, TL - Teamlead
-    'force_include_users': (),  # tuple of confluence logins
-    'force_exclude_users': (),
     'add_team_header': True,
+}
+
+crab_settings = {
+    'crab_base_url': 'crab.pyn.ru',
+    'user_directions': ('frontend', ),  # frontend, backend, qa, mobile, analytics, datascience
+    'force_include_users': (),  # tuple of user logins
+    'force_exclude_users': (),  # tuple of user logins
+    'team_name_prefix': 'Команда ',  # this will be omitted in team name
 }
 
 slack_settings = {
