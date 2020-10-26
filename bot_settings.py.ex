@@ -42,6 +42,11 @@ templates_overrides = {
     'SLACK_REMIND_HAS_UNCHECKED_TEMPLATE': None,
 }
 
+# Optional: labels for creating page
+labels = [
+    "some label text" # e.g 'технологизация_android'
+]
+
 connection_connect_timeout_s = 0.5
 connection_read_timeout_s = 2
 logging = logging
