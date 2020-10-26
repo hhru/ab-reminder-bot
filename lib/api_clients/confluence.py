@@ -34,23 +34,37 @@ class ConfluenceClient:
         )
 
     def post_page(self, title, content, space_key, parent_id=None):
+        pageSettings = {
+            'type': 'page',
+            'title': title,
+            'space': {
+                'key': space_key,
+            },
+            'ancestors': [{'id': int(parent_id)}],
+            'body': {
+                'storage': {
+                    'value': content,
+                    'representation': 'storage',
+                }
+            }
+        }
+        #if bot_settings.labels:
+        #    splittedLabels = bot_settings.labels.split(", ")
+        #    jsonLabels = list(map(lambda label: {"name": '{label}'}, splittedLabels))
+        #    pageSettings['metadata'] = {'labels': jsonLabels}
+
         return self.post(
             bot_settings.confluence_settings['wiki_base_url'],
             '/rest/api/content/',
-            {
-                'type': 'page',
-                'title': title,
-                'space': {
-                    'key': space_key,
-                },
-                'ancestors': [{'id': int(parent_id)}],
-                'body': {
-                    'storage': {
-                        'value': content,
-                        'representation': 'storage',
-                    }
-                }
-            },
+            pageSettings
+        )
+
+    def add_labels(self, page_id, labels):
+        jsonLabels = list(map(lambda label: {"name": '{label_name}'.format(label_name=label)}, labels))
+        return self.post(
+            bot_settings.confluence_settings['wiki_base_url'],
+            '/rest/api/content/{page_id}/label'.format(page_id=page_id),
+            jsonLabels
         )
 
     def get(self, host, url):
