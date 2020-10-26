@@ -39,6 +39,10 @@ def generate_page(params_date=None):
         bot_settings.confluence_settings['parent_page']
     )
 
+    if bot_settings.labels:
+        page_id = result['id']
+        confluence.add_labels(page_id, bot_settings.labels)
+
     page_url = 'https://{host}{url}'.format(
         host=bot_settings.confluence_settings['wiki_base_url'],
         url=result['_links']['webui']

@@ -53,6 +53,14 @@ class ConfluenceClient:
             },
         )
 
+    def add_labels(self, page_id, labels):
+        jsonLabels = list(map(lambda label: {"name": '{label_name}'.format(label_name=label)}, labels))
+        return self.post(
+            bot_settings.confluence_settings['wiki_base_url'],
+            '/rest/api/content/{page_id}/label'.format(page_id=page_id),
+            jsonLabels
+        )
+
     def get(self, host, url):
         full_url = 'https://{host}{url}'.format(host=host, url=url)
         response = requests.get(
