@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:experimental
-FROM registry.pyn.ru/python3.7-ubuntu18-building:2019.07.30
+FROM registry.pyn.ru/python3.7-ubuntu18-building:2020.12.28
 
 WORKDIR /home/hh/ab-reminder-bot
 COPY . .
