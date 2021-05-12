@@ -5,3 +5,8 @@ users.json
 bot_settings.py
 *.pyc
 __pycache__
+
+cache
+
+!cache/.gitkeep
+!secure-config/.gitkeep
