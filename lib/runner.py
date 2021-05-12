@@ -4,6 +4,7 @@ import urllib3
 from lib.handlers.users import generate_users
 from lib.handlers.page import generate_page
 from lib.handlers.remind import remind_users
+from lib.handlers.update import update_state
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -19,6 +20,10 @@ AVAILABLE_COMMANDS = {
     'remind': {
         'handler': remind_users,
         'description': 'Reminds users not fulfilled their cell in'
+    },
+    'update': {
+        'handler': update_state,
+        'description': 'Update current state, read thread replies, fill table cells'
     }
 }
 
