@@ -37,11 +37,13 @@ def get_message_html(message_text):
     def postprocess(html):
         # Вики так умеет сама только в интерфейсе
         def replacer(match):
-            return f'<ac:structured-macro ac:macro-id="{uuid.uuid4()}" ac:name="jira" ac:schema-version="1">' + \
-                   f'<ac:parameter ac:name="server">HH JIRA</ac:parameter>' + \
-                   f'<ac:parameter ac:name="serverId">6faef456-0f82-358f-a362-1f1e9692b9b8</ac:parameter>' + \
-                   f'<ac:parameter ac:name="key">{match.group(1)}</ac:parameter>' + \
-                   f'</ac:structured-macro>'
+            return (
+                f'<ac:structured-macro ac:macro-id="{uuid.uuid4()}" ac:name="jira" ac:schema-version="1">'
+                u'<ac:parameter ac:name="server">HH JIRA</ac:parameter>'
+                u'<ac:parameter ac:name="serverId">6faef456-0f82-358f-a362-1f1e9692b9b8</ac:parameter>'
+                f'<ac:parameter ac:name="key">{match.group(1)}</ac:parameter>'
+                u'</ac:structured-macro>'
+            )
 
         return re.sub('<a.*href=\"[^\"]*https:\\/\\/jira.hh.ru\\/browse\\/([^\"]*)[^<]*<\\/a>', replacer, html, re.M)
 

@@ -1,6 +1,5 @@
 import json
 import requests
-from requests.auth import HTTPBasicAuth
 from urllib.parse import quote
 
 import bot_settings

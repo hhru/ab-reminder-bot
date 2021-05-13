@@ -22,8 +22,8 @@ def generate_users():
         for user in team['activeMembers']:
             username = user['employee']['login']
             if username not in bot_settings.crab_settings['force_exclude_users'] and (
-                    user['direction'] in bot_settings.crab_settings['user_directions']
-                    or username in force_include
+                user['direction'] in bot_settings.crab_settings['user_directions'] or
+                username in force_include
             ):
                 if username in force_include:
                     force_include.remove(username)

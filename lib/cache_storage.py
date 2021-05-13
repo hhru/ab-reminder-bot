@@ -41,4 +41,3 @@ class Storage:
     def update(self, value):
         self.__cache.update(value)
         save_json_file(self.__cache_file, self.__cache)
-

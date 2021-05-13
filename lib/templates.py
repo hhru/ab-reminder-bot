@@ -5,13 +5,12 @@ def is_override_available(template_name):
     return template_name in templates_overrides and templates_overrides[template_name] is not None
 
 
-TITLE_TEMPLATE = templates_overrides['TITLE_TEMPLATE'] if is_override_available('TITLE_TEMPLATE') else \
-    u'AB {date}'
+TITLE_TEMPLATE = templates_overrides['TITLE_TEMPLATE'] if is_override_available('TITLE_TEMPLATE') else u'AB {date}'
 
 
 PAGE_TEMPLATE = templates_overrides['PAGE_TEMPLATE'] if is_override_available('PAGE_TEMPLATE') else \
     u"""
-    После заполнения своей ячейки отметьте чекбокс рядом со своей фамилией, иначе AB Reminder 
+    После заполнения своей ячейки отметьте чекбокс рядом со своей фамилией, иначе AB Reminder
     расстроится и пойдет вас искать.
     <table>
         <thead>
@@ -41,7 +40,7 @@ USER_ROW_TEMPLATE = templates_overrides['USER_ROW_TEMPLATE'] if is_override_avai
                     <ac:task-body>
                         <ac:link><ri:user ri:userkey="{user_key}" /></ac:link>
                     </ac:task-body>
-                </ac:task>    
+                </ac:task>
             </ac:task-list>
         </td>
         <td> </td>
@@ -50,8 +49,7 @@ USER_ROW_TEMPLATE = templates_overrides['USER_ROW_TEMPLATE'] if is_override_avai
     """
 
 SLACK_PAGE_MESSAGE_TEMPLATE = templates_overrides['SLACK_PAGE_MESSAGE_TEMPLATE'] \
-    if is_override_available('SLACK_PAGE_MESSAGE_TEMPLATE') \
-    else (
+    if is_override_available('SLACK_PAGE_MESSAGE_TEMPLATE') else (
         u'Привет всем :wave:! {date} у вас будет АБ, я подготовил страницу, на которой вам нужно рассказать, '
         u'чем занимались и чем планируете заниматься в ближайшее время: {url} .\n'
         u':new: Теперь вы можете заполнить таблицу не уходя из слака! Достаточно написать в тред этого сообщения '
@@ -62,7 +60,7 @@ SLACK_PAGE_MESSAGE_TEMPLATE = templates_overrides['SLACK_PAGE_MESSAGE_TEMPLATE']
         u'в последней колонке.\n'
         u'Ближе к АБ я просмотрю неотмеченные '
         u'чекбоксы, и еще раз напомню об этом тем, кто забыл.'
-    )
+)
 
 SLACK_REMIND_MESSAGE_TEMPLATE = templates_overrides['SLACK_REMIND_MESSAGE_TEMPLATE'] \
     if is_override_available('SLACK_REMIND_MESSAGE_TEMPLATE') \
