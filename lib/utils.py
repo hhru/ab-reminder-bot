@@ -7,15 +7,17 @@ import uuid
 
 from markdown import markdown
 
+from lib.constants import ApiOperationException
+
 
 def get_confluence_page(confluence, search):
     result = confluence.get_page(bot_settings.confluence_settings['space_key'], search)
 
     if result['size'] == 0:
-        raise Exception(f'Page not found, searched for {search}')
+        raise ApiOperationException(f'Page not found, searched for {search}')
 
     if result['size'] > 1:
-        raise Exception(f'Page ambiguous, searched for {search}')
+        raise ApiOperationException(f'Page ambiguous, searched for {search}')
 
     page_content = result['results'][0]['body']['storage']['value']
     page_url = 'https://{host}{url}'.format(
@@ -55,9 +57,9 @@ def get_message_html(message_text):
 
 
 def get_confluence_users_map_by_name():
-    with open('users.json', 'r') as file:
-        teams_users = json.loads(file.read())
-        file.close()
+    teams_users = load_json_file('users.json', absolute_path=True)
+    if teams_users is None:
+        raise Exception('Failed to load users file')
 
     mapping = {}
 
@@ -95,8 +97,6 @@ def load_json_file(name, default=None, absolute_path=False) -> dict:
                 content = json.loads(file.read())
             except json.decoder.JSONDecodeError:
                 os.remove(file_name)
-                pass
-            file.close()
 
     return content
 
@@ -104,7 +104,6 @@ def load_json_file(name, default=None, absolute_path=False) -> dict:
 def save_json_file(name, content):
     with open(f'./cache/{name}', 'w') as file:
         file.write(json.dumps(content, indent=4))
-        file.close()
 
 
 def get_nearest_day_of_week(index):

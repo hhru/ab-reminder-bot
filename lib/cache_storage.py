@@ -3,41 +3,41 @@ from lib.utils import load_json_file, save_json_file
 
 class Storage:
     def __init__(self, storage_key):
-        self.__cache_file = f'storage_{storage_key}.json'
-        self.__cache = load_json_file(self.__cache_file, {})
+        self._cache_file = f'storage_{storage_key}.json'
+        self._cache = load_json_file(self._cache_file, {})
 
     def __len__(self):
-        return len(self.__cache)
+        return len(self._cache)
 
     def __getitem__(self, key):
-        if key not in self.__cache:
+        if key not in self._cache:
             return {}
 
-        return self.__cache[key]
+        return self._cache[key]
 
     def __setitem__(self, key, value):
-        self.__cache[key] = value
-        save_json_file(self.__cache_file, self.__cache)
+        self._cache[key] = value
+        save_json_file(self._cache_file, self._cache)
 
     def __delitem__(self, key):
-        if key not in self.__cache:
+        if key not in self._cache:
             raise KeyError
 
-        del self.__cache[key]
-        save_json_file(self.__cache_file, self.__cache)
+        del self._cache[key]
+        save_json_file(self._cache_file, self._cache)
 
     def __iter__(self):
-        return self.__cache.__iter__()
+        return self._cache.__iter__()
 
     def __reversed__(self):
-        return self.__cache.__reversed__()
+        return self._cache.__reversed__()
 
     def __contains__(self, item):
-        return item in self.__cache
+        return item in self._cache
 
     def get(self, key, default=None):
-        return self.__cache.get(key, default)
+        return self._cache.get(key, default)
 
     def update(self, value):
-        self.__cache.update(value)
-        save_json_file(self.__cache_file, self.__cache)
+        self._cache.update(value)
+        save_json_file(self._cache_file, self._cache)
