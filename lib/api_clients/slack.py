@@ -175,7 +175,7 @@ class SlackClient:
                 user_email: create_im_response['channel']['id']
             })
 
-            self.storage['user_im_channels'] = current_channels
+            self.storage['im_channels'] = current_channels
 
         self.post_channel_message(message, self.storage['im_channels'][user_email])
 
