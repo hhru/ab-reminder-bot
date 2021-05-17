@@ -90,14 +90,13 @@ def update_state():
         logger.info('Nothing to update, state is idle, exiting')
         return
 
+    page_date = storage.get('date', bot_settings.defaults['date'])
+
     processed_messages = storage['processed_messages']
 
     current_messages, last_bot_message, last_updated = get_current_messages(slack)
 
-    page = get_confluence_page(
-        confluence,
-        TITLE_TEMPLATE.format(date=bot_settings.defaults['date'])
-    )
+    page = get_confluence_page(confluence, TITLE_TEMPLATE.format(date=page_date))
 
     soup = BeautifulSoup(page['content'], 'html.parser')
 
