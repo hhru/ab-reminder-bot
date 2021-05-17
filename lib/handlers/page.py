@@ -13,9 +13,6 @@ from lib.constants import PageUpdateStates, CHECKED_MESSAGE_REACTION
 def generate_page(params_date=None):
     date = get_usable_date(params_date, bot_settings.defaults)
     state_storage = Storage('state')
-    if 'processed_messages' in state_storage:
-        del state_storage['processed_messages']
-    state_storage['state'] = PageUpdateStates.GATHERING
 
     confluence = ConfluenceClient(
         bot_settings.confluence_settings['login'],
@@ -45,6 +42,11 @@ def generate_page(params_date=None):
         bot_settings.confluence_settings['space_key'],
         bot_settings.confluence_settings['parent_page']
     )
+
+    if 'processed_messages' in state_storage:
+        del state_storage['processed_messages']
+    state_storage['state'] = PageUpdateStates.GATHERING
+    state_storage['date'] = date
 
     if bot_settings.labels:
         page_id = result['id']
