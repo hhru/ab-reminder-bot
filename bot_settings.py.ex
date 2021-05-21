@@ -20,6 +20,7 @@ crab_settings = {
     'user_directions': ('frontend', ),  # frontend, backend, qa, mobile, analytics, datascience
     'force_include_users': (),  # tuple of user logins
     'force_exclude_users': (),  # tuple of user logins
+    'force_exclude_teams': ('Технический департамент',),  # crab returns director's team separately
     'team_name_prefix': 'Команда ',  # this will be omitted in team name
 }
 
