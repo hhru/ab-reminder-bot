@@ -47,7 +47,7 @@ def get_message_html(message_text):
                 u'</ac:structured-macro>'
             )
 
-        return re.sub('<a.*href=\"[^\"]*https:\\/\\/jira.hh.ru\\/browse\\/([^\"]*)[^<]*<\\/a>', replacer, html, re.M)
+        return re.sub('<a.*href=\"[^\"]*https:\\/\\/jira.hh.ru\\/browse\\/([^\"?#]*)[^<]*<\\/a>', replacer, html, re.M)
 
     def preprocess(text):
         # Формат списков и ссылок
