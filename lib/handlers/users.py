@@ -22,7 +22,6 @@ def generate_users():
             continue
         parsed_team = []
         team_users = team['activeMembers'] + ([team['manager']] if 'manager' in team else [])
-        print(team_users)
         for user in team_users:
             username = user['employee']['login']
             if username not in bot_settings.crab_settings['force_exclude_users'] and (
