@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import bot_settings
 from lib.api_clients.confluence import ConfluenceClient
 from lib.api_clients.slack import SlackClient
-from lib.templates import TITLE_TEMPLATE, SLACK_STALE_THREAD_MESSAGE
+from lib.templates import TITLE_TEMPLATE, SLACK_PAGE_MESSAGE_TEMPLATE, SLACK_STALE_THREAD_MESSAGE
 from lib.utils import get_confluence_user_key_by_slack_user, get_confluence_page, get_message_html
 from lib.cache_storage import Storage
 from lib.constants import PageUpdateStates, BOT_PROCESSED_REACTION, CHECKED_MESSAGE_REACTION
@@ -131,4 +131,11 @@ def update_state():
 
     if int(last_updated.split('.')[0]) < int(datetime.now().timestamp()) - TWO_DAYS_SECONDS:
         storage['state'] = PageUpdateStates.IDLE
-        slack.post_channel_message(SLACK_STALE_THREAD_MESSAGE, thread_ts=last_bot_message['thread_ts'])
+        slack.update_message(
+            SLACK_PAGE_MESSAGE_TEMPLATE.format(
+                thread_messages_text=SLACK_STALE_THREAD_MESSAGE,
+                date=page_date,
+                url=page['url']
+            ),
+            message_ts=last_bot_message['ts']
+        )

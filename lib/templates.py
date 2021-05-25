@@ -51,15 +51,12 @@ USER_ROW_TEMPLATE = templates_overrides['USER_ROW_TEMPLATE'] if is_override_avai
 SLACK_PAGE_MESSAGE_TEMPLATE = templates_overrides['SLACK_PAGE_MESSAGE_TEMPLATE'] \
     if is_override_available('SLACK_PAGE_MESSAGE_TEMPLATE') else (
         u'Привет всем :wave:! {date} у вас будет АБ, я подготовил страницу, на которой вам нужно рассказать, '
-        u'чем занимались и чем планируете заниматься в ближайшее время: {url} .\n'
-        u':new: Теперь вы можете заполнить таблицу не уходя из слака! Достаточно написать в тред этого сообщения '
-        u'и поставить своему сообщению эмоут :{checked_message_reaction}:! Я периодически буду собирать такие '
-        u'сообщения и отправлять их в вики.\n\n'
-        u'Найдите там себя, заполните ячейку и отметьте чекбокс напротив своей фамилии. '
+        u'чем занимались и чем планируете заниматься в ближайшее время: {url}. '
+        u'Найдите там себя, заполните ячейку и отметьте чекбокс напротив своей фамилии.\n\n'
+        '{thread_messages_text}\n\n'
         u'Также, вы можете посмотреть, чем занимались другие, и оставить свои вопросы и комментарии '
         u'в последней колонке.\n'
-        u'Ближе к АБ я просмотрю неотмеченные '
-        u'чекбоксы, и еще раз напомню об этом тем, кто забыл.'
+        u'Ближе к АБ я просмотрю неотмеченные чекбоксы, и еще раз напомню об этом тем, кто забыл.'
 )
 
 SLACK_REMIND_MESSAGE_TEMPLATE = templates_overrides['SLACK_REMIND_MESSAGE_TEMPLATE'] \
@@ -82,7 +79,17 @@ SLACK_REMIND_PRIVATE_MESSAGE = templates_overrides['SLACK_REMIND_PRIVATE_MESSAGE
     if is_override_available('SLACK_REMIND_PRIVATE_MESSAGE') \
     else u'Не забудь заполнить АБ! <{message_link}|Подробности тут>'
 
+SLACK_ACTIVE_THREAD_MESSAGE = templates_overrides['SLACK_ACTIVE_THREAD_MESSAGE'] \
+    if is_override_available('SLACK_ACTIVE_THREAD_MESSAGE') else (
+        u':new: Теперь вы можете заполнить таблицу не уходя из слака! Достаточно написать в тред этого сообщения '
+        u'и поставить своему сообщению эмоут :{checked_message_reaction}:! Я периодически буду собирать такие '
+        u'сообщения и отправлять их в вики.'
+)
+
 SLACK_STALE_THREAD_MESSAGE = templates_overrides['SLACK_STALE_THREAD_MESSAGE'] \
-    if is_override_available('SLACK_REMIND_PRIVATE_MESSAGE') \
-    else u':tumbleweed: В этот тред уже давно никто ничего не писал, я больше не буду за ним следить. ' + \
-         u'Если вы все еще не заполнили таблицу – сделайте это вручную, пожалуйста.'
+    if is_override_available('SLACK_STALE_THREAD_MESSAGE') \
+    else (
+        u':tumbleweed: Я больше не слежу за трэдом этого сообщения, '
+        u'если хотите дописать что-то в таблицу – сделайте это напрямую в вики.'
+)
+

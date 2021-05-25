@@ -198,6 +198,11 @@ class SlackClient:
         response = self.api_post('chat.postMessage', params)
         return response['message']
 
+    def update_message(self, message, channel=None, message_ts=None):
+        channel = self.get_channel_id() if channel is None else channel
+        response = self.api_post('chat.update', {'text': message, 'channel': channel, 'ts': message_ts})
+        return response['message']
+
     def api_get(self, endpoint, params=None):
         response = requests.get(
             f'{self.url}/{endpoint}',
