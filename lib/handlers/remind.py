@@ -6,8 +6,8 @@ import bot_settings
 from lib.api_clients.confluence import ConfluenceClient
 from lib.api_clients.slack import SlackClient
 from lib.templates import TITLE_TEMPLATE, SLACK_REMIND_MESSAGE_TEMPLATE, SLACK_REMIND_ALL_CHECKED_TEMPLATE, \
-    SLACK_REMIND_HAS_UNCHECKED_TEMPLATE
-from lib.utils import get_usable_date
+    SLACK_REMIND_PRIVATE_MESSAGE
+from lib.utils import get_usable_date, get_confluence_page
 
 
 def remind_users(params_date=None):
@@ -19,24 +19,9 @@ def remind_users(params_date=None):
     )
     slack = SlackClient()
 
-    result = confluence.get_page(
-        bot_settings.confluence_settings['space_key'],
-        TITLE_TEMPLATE.format(date=date)
-    )
+    page = get_confluence_page(confluence, TITLE_TEMPLATE.format(date=date))
 
-    if result['size'] == 0:
-        raise Exception('Page not found')
-
-    if result['size'] > 1:
-        raise Exception('Page ambiguous')
-
-    page_content = result['results'][0]['body']
-    page_url = 'https://{host}{url}'.format(
-        host=bot_settings.confluence_settings['wiki_base_url'],
-        url=result['results'][0]['_links']['webui']
-    )
-
-    soup = BeautifulSoup('<html>{content}</html>'.format(content=page_content), 'html.parser')
+    soup = BeautifulSoup(page['content'], 'html.parser')
 
     users_to_remind_keys = []
 
@@ -57,22 +42,17 @@ def remind_users(params_date=None):
                 if user['userKey'] in users_to_remind_keys:
                     users_to_remind.append(user)
 
-        slack_users_list = slack.get_users_list()
-        slack_email_to_name_map = {}
-
-        for slack_member in slack_users_list:
-            if 'email' in slack_member['profile'] and slack_member['profile']['email'] != '':
-                slack_email_to_name_map.update({slack_member['profile']['email']: slack_member['name']})
-
-        users_to_remind_slack = []
+        slack_users_map = slack.get_users_email_mapping()
+        last_bot_message_link = slack.get_message_link(slack.get_last_bot_message())
         for user in users_to_remind:
             if user['userName'] in bot_settings.slack_settings['email_override']:
                 corporate_email = bot_settings.slack_settings['email_override'][user['userName']]
             else:
                 corporate_email = '{user_name}@hh.ru'.format(user_name=user['userName'])
-            if corporate_email in slack_email_to_name_map:
-                users_to_remind_slack.append(
-                    '<@{slack_username}>'.format(slack_username=slack_email_to_name_map[corporate_email])
+            if corporate_email in slack_users_map:
+                slack.post_private_message(
+                    corporate_email,
+                    SLACK_REMIND_PRIVATE_MESSAGE.format(message_link=last_bot_message_link)
                 )
             else:
                 bot_settings.logging.warning(
@@ -80,13 +60,8 @@ def remind_users(params_date=None):
                         confluence_username=user['userName']
                     )
                 )
-                users_to_remind_slack.append(user['displayName'])
-
-        remind_condition = SLACK_REMIND_HAS_UNCHECKED_TEMPLATE.format(users=', '.join(users_to_remind_slack))
     else:
-        remind_condition = SLACK_REMIND_ALL_CHECKED_TEMPLATE
-
-    slack.post_message(SLACK_REMIND_MESSAGE_TEMPLATE.format(
-        remind_condition=remind_condition,
-        url=page_url,
-    ))
+        slack.post_channel_message(SLACK_REMIND_MESSAGE_TEMPLATE.format(
+            remind_condition=SLACK_REMIND_ALL_CHECKED_TEMPLATE,
+            url=page['url'],
+        ))

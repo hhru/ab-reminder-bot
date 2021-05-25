@@ -4,11 +4,15 @@ import bot_settings
 from lib.api_clients.confluence import ConfluenceClient
 from lib.api_clients.slack import SlackClient
 from lib.templates import SLACK_PAGE_MESSAGE_TEMPLATE, TITLE_TEMPLATE, PAGE_TEMPLATE, USER_ROW_TEMPLATE, \
-    TEAM_ROW_TEMPLATE
+    TEAM_ROW_TEMPLATE, SLACK_ACTIVE_THREAD_MESSAGE
 from lib.utils import get_usable_date
+from lib.cache_storage import Storage
+from lib.constants import PageUpdateStates, CHECKED_MESSAGE_REACTION
+
 
 def generate_page(params_date=None):
     date = get_usable_date(params_date, bot_settings.defaults)
+    state_storage = Storage('state')
 
     confluence = ConfluenceClient(
         bot_settings.confluence_settings['login'],
@@ -39,6 +43,11 @@ def generate_page(params_date=None):
         bot_settings.confluence_settings['parent_page']
     )
 
+    if 'processed_messages' in state_storage:
+        del state_storage['processed_messages']
+    state_storage['state'] = PageUpdateStates.GATHERING
+    state_storage['date'] = date
+
     if bot_settings.labels:
         page_id = result['id']
         confluence.add_labels(page_id, bot_settings.labels)
@@ -48,7 +57,8 @@ def generate_page(params_date=None):
         url=result['_links']['webui']
     )
 
-    slack.post_message(SLACK_PAGE_MESSAGE_TEMPLATE.format(
+    slack.post_channel_message(SLACK_PAGE_MESSAGE_TEMPLATE.format(
+        thread_messages_text=SLACK_ACTIVE_THREAD_MESSAGE.format(checked_message_reaction=CHECKED_MESSAGE_REACTION),
         date=date,
         url=page_url
     ))

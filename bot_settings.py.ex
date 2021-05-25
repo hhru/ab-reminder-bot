@@ -20,12 +20,13 @@ crab_settings = {
     'user_directions': ('frontend', ),  # frontend, backend, qa, mobile, analytics, datascience
     'force_include_users': (),  # tuple of user logins
     'force_exclude_users': (),  # tuple of user logins
+    'force_exclude_teams': ('Технический департамент',),  # crab returns director's team separately
     'team_name_prefix': 'Команда ',  # this will be omitted in team name
 }
 
 slack_settings = {
-    'slack_hook_url': 'hooks.slack.com',
-    'channel_hook': '',  # channel hook URL
+    'slack_api_url': 'https://slack.com/api',
+    'channel': 'frontend',  # slack channel to post to, for private channels bot must be installed
     'oauth_token': '',  # oAUTH authorization token
     'email_override': {},  # dict of confluence_logins to emails mapping
 }
@@ -44,7 +45,7 @@ templates_overrides = {
 
 # Optional: labels for creating page
 labels = [
-    "some label text" # e.g 'технологизация_android'
+    "some label text"  # e.g 'технологизация_android'
 ]
 
 connection_connect_timeout_s = 0.5

@@ -5,13 +5,12 @@ def is_override_available(template_name):
     return template_name in templates_overrides and templates_overrides[template_name] is not None
 
 
-TITLE_TEMPLATE = templates_overrides['TITLE_TEMPLATE'] if is_override_available('TITLE_TEMPLATE') else \
-    u'AB {date}'
+TITLE_TEMPLATE = templates_overrides['TITLE_TEMPLATE'] if is_override_available('TITLE_TEMPLATE') else u'AB {date}'
 
 
 PAGE_TEMPLATE = templates_overrides['PAGE_TEMPLATE'] if is_override_available('PAGE_TEMPLATE') else \
     u"""
-    После заполнения своей ячейки отметьте чекбокс рядом со своей фамилией, иначе AB Reminder 
+    После заполнения своей ячейки отметьте чекбокс рядом со своей фамилией, иначе AB Reminder
     расстроится и пойдет вас искать.
     <table>
         <thead>
@@ -41,7 +40,7 @@ USER_ROW_TEMPLATE = templates_overrides['USER_ROW_TEMPLATE'] if is_override_avai
                     <ac:task-body>
                         <ac:link><ri:user ri:userkey="{user_key}" /></ac:link>
                     </ac:task-body>
-                </ac:task>    
+                </ac:task>
             </ac:task-list>
         </td>
         <td> </td>
@@ -50,12 +49,15 @@ USER_ROW_TEMPLATE = templates_overrides['USER_ROW_TEMPLATE'] if is_override_avai
     """
 
 SLACK_PAGE_MESSAGE_TEMPLATE = templates_overrides['SLACK_PAGE_MESSAGE_TEMPLATE'] \
-    if is_override_available('SLACK_PAGE_MESSAGE_TEMPLATE') \
-    else u'Привет всем :wave:! {date} у вас будет АБ, я подготовил страницу, на которой вам нужно рассказать, ' + \
-         u'чем занимались и чем планируете заниматься в ближайшее время: {url} .\nНайдите там себя, заполните ' + \
-         u'ячейку и отметьте чекбокс напротив своей фамилии. Также, вы можете посмотреть, чем занимались другие, ' + \
-         u'и оставить свои вопросы и коментарии в последней колонке.\nБлиже к АБ я просмотрю неотмеченные ' + \
-         u'чекбоксы, и еще раз напомню об этом тем, кто забыл.'
+    if is_override_available('SLACK_PAGE_MESSAGE_TEMPLATE') else (
+        u'Привет всем :wave:! {date} у вас будет АБ, я подготовил страницу, на которой вам нужно рассказать, '
+        u'чем занимались и чем планируете заниматься в ближайшее время: {url}. '
+        u'Найдите там себя, заполните ячейку и отметьте чекбокс напротив своей фамилии.\n\n'
+        '{thread_messages_text}\n\n'
+        u'Также, вы можете посмотреть, чем занимались другие, и оставить свои вопросы и комментарии '
+        u'в последней колонке.\n'
+        u'Ближе к АБ я просмотрю неотмеченные чекбоксы, и еще раз напомню об этом тем, кто забыл.'
+)
 
 SLACK_REMIND_MESSAGE_TEMPLATE = templates_overrides['SLACK_REMIND_MESSAGE_TEMPLATE'] \
     if is_override_available('SLACK_REMIND_MESSAGE_TEMPLATE') \
@@ -64,7 +66,7 @@ SLACK_REMIND_MESSAGE_TEMPLATE = templates_overrides['SLACK_REMIND_MESSAGE_TEMPLA
 
 SLACK_REMIND_ALL_CHECKED_TEMPLATE = templates_overrides['SLACK_REMIND_ALL_CHECKED_TEMPLATE'] \
     if is_override_available('SLACK_REMIND_ALL_CHECKED_TEMPLATE') \
-    else u'полностью :notbad:! На всякий случай напомню, что вы можете оставить вопросы и коментарии к тому, ' + \
+    else u'полностью :notbad:! На всякий случай напомню, что вы можете оставить вопросы и комментарии к тому, ' + \
          u'что написали другие, в последней колонке.'
 
 SLACK_REMIND_HAS_UNCHECKED_TEMPLATE = templates_overrides['SLACK_REMIND_HAS_UNCHECKED_TEMPLATE'] \
@@ -72,3 +74,22 @@ SLACK_REMIND_HAS_UNCHECKED_TEMPLATE = templates_overrides['SLACK_REMIND_HAS_UNCH
     else u'не полностью :crycat:. Поэтому, как и писал до этого, напоминаю: {users} - вам нужно рассказать о том, ' + \
          u'чем вы занимались последнее время, и чем планируете заниматься. Также, все вы можете оставить вопросы ' + \
          u'и коментарии написанному другими, в последней колонке.'
+
+SLACK_REMIND_PRIVATE_MESSAGE = templates_overrides['SLACK_REMIND_PRIVATE_MESSAGE'] \
+    if is_override_available('SLACK_REMIND_PRIVATE_MESSAGE') \
+    else u'Не забудь заполнить АБ! <{message_link}|Подробности тут>'
+
+SLACK_ACTIVE_THREAD_MESSAGE = templates_overrides['SLACK_ACTIVE_THREAD_MESSAGE'] \
+    if is_override_available('SLACK_ACTIVE_THREAD_MESSAGE') else (
+        u':new: Теперь вы можете заполнить таблицу не уходя из слака! Достаточно написать в тред этого сообщения '
+        u'и поставить своему сообщению эмоут :{checked_message_reaction}:! Я периодически буду собирать такие '
+        u'сообщения и отправлять их в вики.'
+)
+
+SLACK_STALE_THREAD_MESSAGE = templates_overrides['SLACK_STALE_THREAD_MESSAGE'] \
+    if is_override_available('SLACK_STALE_THREAD_MESSAGE') \
+    else (
+        u':tumbleweed: Я больше не слежу за трэдом этого сообщения, '
+        u'если хотите дописать что-то в таблицу – сделайте это напрямую в вики.'
+)
+
