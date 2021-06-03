@@ -57,7 +57,14 @@ class SlackClient:
 
         cursor = ''
         while True:
-            json_data = self.api_get('conversations.list', {'cursor': cursor, 'exclude_archived': True})
+            json_data = self.api_get(
+                'conversations.list',
+                {
+                    'cursor': cursor,
+                    'exclude_archived': True,
+                    'types': 'public_channel,private_channel'
+                }
+            )
 
             for channel in json_data['channels']:
                 if channel['name'] == self.channel_name:
@@ -66,6 +73,8 @@ class SlackClient:
 
             if not cursor:
                 break
+
+        raise ApiOperationException(f'Channel "{self.channel_name}" not found or not available')
 
     def get_users_list(self):
         if len(self.__cached_users) == 0:
