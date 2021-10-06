@@ -1,11 +1,11 @@
 from datetime import datetime
 import requests
 
-import bot_settings
+import settings
 from lib.cache_storage import Storage
 from lib.constants import ApiOperationException
 
-logger = bot_settings.logging.getLogger(__name__)
+logger = settings.logging.getLogger(__name__)
 
 
 def get_two_week_from_now_ts():
@@ -25,9 +25,9 @@ def get_response_json(response):
 
 class SlackClient:
     def __init__(self):
-        self.url = bot_settings.slack_settings['slack_api_url']
-        self.token = bot_settings.slack_settings['oauth_token']
-        self.channel_name = bot_settings.slack_settings['channel']
+        self.url = settings.slack_settings['url']
+        self.token = settings.slack_settings['token']
+        self.channel_name = settings.slack_settings['channel']
         self.storage = Storage('slack')
         self.__cached_users = []
 
@@ -220,8 +220,8 @@ class SlackClient:
                 'Authorization': f'Bearer {self.token}',
             },
             timeout=(
-                bot_settings.connection_connect_timeout_s,
-                bot_settings.connection_read_timeout_s
+                settings.connection_connect_timeout_s,
+                settings.connection_read_timeout_s
             )
         )
 
@@ -237,8 +237,8 @@ class SlackClient:
                 'Authorization': f'Bearer {self.token}',
             },
             timeout=(
-                bot_settings.connection_connect_timeout_s,
-                bot_settings.connection_read_timeout_s
+                settings.connection_connect_timeout_s,
+                settings.connection_read_timeout_s
             ),
         )
 

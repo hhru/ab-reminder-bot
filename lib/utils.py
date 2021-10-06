@@ -1,4 +1,4 @@
-import bot_settings
+import settings
 import datetime
 import json
 import os
@@ -11,7 +11,7 @@ from lib.constants import ApiOperationException
 
 
 def get_confluence_page(confluence, search):
-    result = confluence.get_page(bot_settings.confluence_settings['space_key'], search)
+    result = confluence.get_page(settings.confluence_settings['space_key'], search)
 
     if result['size'] == 0:
         raise ApiOperationException(f'Page not found, searched for {search}')
@@ -21,7 +21,7 @@ def get_confluence_page(confluence, search):
 
     page_content = result['results'][0]['body']['storage']['value']
     page_url = 'https://{host}{url}'.format(
-        host=bot_settings.confluence_settings['wiki_base_url'],
+        host=settings.confluence_settings['wiki_url'],
         url=result['results'][0]['_links']['webui']
     )
 
@@ -57,7 +57,7 @@ def get_message_html(message_text):
 
 
 def get_confluence_users_map_by_name():
-    teams_users = load_json_file('users.json', absolute_path=True)
+    teams_users = load_json_file('users.json')
     if teams_users is None:
         raise Exception('Failed to load users file')
 
@@ -77,7 +77,7 @@ def get_confluence_users_map_by_name():
 
 
 def get_confluence_user_key_by_slack_user(user):
-    overrides_swap = {value: key for key, value in bot_settings.slack_settings['email_override'].items()}
+    overrides_swap = {value: key for key, value in settings.slack_settings['email_override'].items()}
     confluence_users_map = get_confluence_users_map_by_name()
 
     if user['email'] in overrides_swap:

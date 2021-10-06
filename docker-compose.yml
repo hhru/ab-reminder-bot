@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  ab-reminder-bot:
+    container_name: ab-reminder-bot
+    image: registry.pyn.ru/ab_reminder_bot:latest
+    volumes:
+      - ./cache:/ab-reminder-bot/cache
+      - ./bot_settings.py:/ab-reminder-bot/bot_settings.py
+      - ./config.json:/ab-reminder-bot/general_config.json

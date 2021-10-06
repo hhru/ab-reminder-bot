@@ -3,6 +3,7 @@
 *.iml
 users.json
 bot_settings.py
+config.json
 *.pyc
 __pycache__
 

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup
 
-import bot_settings
+import settings
 from lib.api_clients.confluence import ConfluenceClient
 from lib.api_clients.slack import SlackClient
 from lib.templates import TITLE_TEMPLATE, SLACK_PAGE_MESSAGE_TEMPLATE, SLACK_STALE_THREAD_MESSAGE
@@ -13,7 +13,7 @@ from lib.constants import PageUpdateStates, BOT_PROCESSED_REACTION, CHECKED_MESS
 
 TWO_DAYS_SECONDS = 2 * 24 * 60 * 60
 
-logger = bot_settings.logging.getLogger(__name__)
+logger = settings.logging.getLogger(__name__)
 
 
 def has_check_mark(message):
@@ -80,8 +80,8 @@ def needs_processing(user_key, current_messages, processed_messages):
 def update_state():
     slack = SlackClient()
     confluence = ConfluenceClient(
-        bot_settings.confluence_settings['login'],
-        bot_settings.confluence_settings['password']
+        settings.confluence_settings['wiki_username'],
+        settings.confluence_settings['wiki_password']
     )
     storage = Storage('state')
 
@@ -90,7 +90,7 @@ def update_state():
         logger.info('Nothing to update, state is idle, exiting')
         return
 
-    page_date = storage.get('date', bot_settings.defaults['date'])
+    page_date = storage.get('date', settings.defaults['date'])
 
     processed_messages = storage['processed_messages']
 

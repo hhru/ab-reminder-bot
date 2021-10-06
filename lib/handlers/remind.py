@@ -2,7 +2,7 @@ import json
 
 from bs4 import BeautifulSoup
 
-import bot_settings
+import settings
 from lib.api_clients.confluence import ConfluenceClient
 from lib.api_clients.slack import SlackClient
 from lib.templates import TITLE_TEMPLATE, SLACK_REMIND_MESSAGE_TEMPLATE, SLACK_REMIND_ALL_CHECKED_TEMPLATE, \
@@ -11,11 +11,11 @@ from lib.utils import get_usable_date, get_confluence_page
 
 
 def remind_users(params_date=None):
-    date = get_usable_date(params_date, bot_settings.defaults)
+    date = get_usable_date(params_date, settings.defaults)
 
     confluence = ConfluenceClient(
-        bot_settings.confluence_settings['login'],
-        bot_settings.confluence_settings['password']
+        settings.confluence_settings['wiki_username'],
+        settings.confluence_settings['wiki_password']
     )
     slack = SlackClient()
 
@@ -31,7 +31,7 @@ def remind_users(params_date=None):
             users_to_remind_keys.append(task.find('ri:user')['ri:userkey'])
 
     if len(users_to_remind_keys) > 0:
-        with open('users.json', 'r') as file:
+        with open('./cache/users.json', 'r') as file:
             teams_users = json.loads(file.read())
             file.close()
 
@@ -45,8 +45,8 @@ def remind_users(params_date=None):
         slack_users_map = slack.get_users_email_mapping()
         last_bot_message_link = slack.get_message_link(slack.get_last_bot_message())
         for user in users_to_remind:
-            if user['userName'] in bot_settings.slack_settings['email_override']:
-                corporate_email = bot_settings.slack_settings['email_override'][user['userName']]
+            if user['userName'] in settings.slack_settings['email_override']:
+                corporate_email = settings.slack_settings['email_override'][user['userName']]
             else:
                 corporate_email = '{user_name}@hh.ru'.format(user_name=user['userName'])
             if corporate_email in slack_users_map:
@@ -55,7 +55,7 @@ def remind_users(params_date=None):
                     SLACK_REMIND_PRIVATE_MESSAGE.format(message_link=last_bot_message_link)
                 )
             else:
-                bot_settings.logging.warning(
+                settings.logging.warning(
                     'Not found slack name for confluence user {confluence_username}'.format(
                         confluence_username=user['userName']
                     )

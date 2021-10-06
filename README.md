@@ -1,17 +1,36 @@
 # AB Reminder bot
 
-AB fulfillment service. Creates wiki page, and reminds about it in specific Slack channel
+Бот создающий страницу wiki для AB и отправляющий напоминания о заполнении в slack 
 
+## Как использовать 
 
-### Requirements
- * Python 3
-### How to use
+Для запуска бота необходимо указать пути к нужным файлам/директориям в файле `docker-compose.yml` в разделе `volumes`.
 
-Copy `bot_settings.py.ex` to `bot_settings.py` and fill empty values, update templates if needed
+Там нужно указать три пути для монтирования:
+* Путь к директории, где будут храниться файлы кешей
+* Путь к файлу с настройками авторизации, пример находится в `config.json.ex`
+* Путь к файлу с основными настройками, пример находится в `bot_settings.py.ex`
 
-Install requirements with `pip install -r requirements.txt`
+После этого для запуска бота можно выполнить одну из команд:
+* `docker-compose run ab-reminder-bot users` - получает и сохраняет в кеш информацию о командах и их участниках, 
+  для которых необходимо подготовить wiki страницу и сделать напоминание
+* `docker-compose run ab-reminder-bot page` - создает wiki страницу и отправляет сообщение в slack
+* `docker-compose run ab-reminder-bot remind` - отправляет в slack напоминание о необходимости заполнить страницу юзерам 
+не заполнившим её
+* `docker-compose run ab-reminder-bot update` - забирает сообщения из slack треда, относящегося к сообщению созданному 
+  на этапе `page`, и добавляет их на созданную wiki страницу
+  
+Для периодического запуска этих задач используется cron.
 
-Commands:
-* `python run.py users` to generate userlist, this must be done only if something changed since last run
-* `python run.py page [<DATE>]` to create wiki page and send first reminder to Slack. `<DATE>` will be used in page title and must be unique. If date is not provided, bot will try to use `bot_settings.defaults['date']`
-* `python run.py remind [<DATE>]` to send second Slack notification with non-filled cells mention
+## Как выпустить новую версию
+
+1. Узнать последнюю версию докер-образа на http://registry.pyn.ru:5000/v2/ab_reminder_bot/tags/list
+2. Собрать образ со следующей версией и пометить его тегом latest
+    ```
+    docker build -t registry.pyn.ru/ab_reminder_bot:<version> -t registry.pyn.ru/ab_reminder_bot:latest -f ./docker/Dockerfile .
+    ```
+3. Запушить образ
+    ```
+    docker push registry.pyn.ru/ab_reminder_bot:<version> && docker push registry.pyn.ru/ab_reminder_bot:latest
+    ```
+   

@@ -2,10 +2,10 @@ import json
 import requests
 from urllib.parse import quote
 
-import bot_settings
+import settings
 from lib.constants import ApiOperationException
 
-logger = bot_settings.logging.getLogger(__name__)
+logger = settings.logging.getLogger(__name__)
 
 
 class ConfluenceClient:
@@ -14,19 +14,19 @@ class ConfluenceClient:
 
     def get_users(self):
         return self.api_get(
-            bot_settings.confluence_settings['jira_base_url'],
+            settings.confluence_settings['jira_url'],
             '/rest/jirastat/1.0/team/list'
         )
 
     def get_user_info(self, user_name):
         return self.api_get(
-            bot_settings.confluence_settings['wiki_base_url'],
+            settings.confluence_settings['wiki_url'],
             '/rest/api/user?username={user_name}'.format(user_name=user_name)
         )
 
     def get_page(self, space_key, title, expand=('body.storage', 'version', 'space')):
         return self.api_get(
-            bot_settings.confluence_settings['wiki_base_url'],
+            settings.confluence_settings['wiki_url'],
             '/rest/api/content/?spaceKey={space_key}&title={title}&expand={expand}'.format(
                 space_key=quote(space_key),
                 title=quote(title),
@@ -36,7 +36,7 @@ class ConfluenceClient:
 
     def post_page(self, title, content, space_key, parent_id=None):
         return self.api_post(
-            bot_settings.confluence_settings['wiki_base_url'],
+            settings.confluence_settings['wiki_url'],
             '/rest/api/content/',
             {
                 'type': 'page',
@@ -56,7 +56,7 @@ class ConfluenceClient:
 
     def update_page(self, page):
         return self.api_put(
-            bot_settings.confluence_settings['wiki_base_url'],
+            settings.confluence_settings['wiki_url'],
             f'/rest/api/content/{page["id"]}',
             {
                 'id': page['id'],
@@ -80,7 +80,7 @@ class ConfluenceClient:
     def add_labels(self, page_id, labels):
         json_labels = list(map(lambda label: {"name": '{label_name}'.format(label_name=label)}, labels))
         return self.api_post(
-            bot_settings.confluence_settings['wiki_base_url'],
+            settings.confluence_settings['wiki_url'],
             '/rest/api/content/{page_id}/label'.format(page_id=page_id),
             json_labels
         )
@@ -91,8 +91,8 @@ class ConfluenceClient:
             full_url,
             auth=self.auth,
             timeout=(
-                bot_settings.connection_connect_timeout_s,
-                bot_settings.connection_read_timeout_s
+                settings.connection_connect_timeout_s,
+                settings.connection_read_timeout_s
             ),
             verify=False
         )
@@ -110,8 +110,8 @@ class ConfluenceClient:
             json_data,
             auth=self.auth,
             timeout=(
-                bot_settings.connection_connect_timeout_s,
-                bot_settings.connection_read_timeout_s
+                settings.connection_connect_timeout_s,
+                settings.connection_read_timeout_s
             ),
             verify=False
         )
@@ -131,8 +131,8 @@ class ConfluenceClient:
                 'Content-type': 'application/json',
             },
             timeout=(
-                bot_settings.connection_connect_timeout_s,
-                bot_settings.connection_read_timeout_s
+                settings.connection_connect_timeout_s,
+                settings.connection_read_timeout_s
             ),
             verify=False
         )
