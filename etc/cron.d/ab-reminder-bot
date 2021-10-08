@@ -1,6 +1,0 @@
-# https://github.com/hhru/ab-reminder-bot crons
-
-45 10 * * 5 root docker-compose -f /home/i.buravkin/ab-reminder/docker-compose.yml run ab-reminder-bot users
-0 11 * * 5 root docker-compose -f /home/i.buravkin/ab-reminder/docker-compose.yml run ab-reminder-bot page
-0 14 * * 5 root docker-compose -f /home/i.buravkin/ab-reminder/docker-compose.yml run ab-reminder-bot remind
-*/3 * * * * root docker-compose -f /home/i.buravkin/ab-reminder/docker-compose.yml run ab-reminder-bot update
