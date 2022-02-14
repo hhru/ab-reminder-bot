@@ -7,4 +7,4 @@ COPY . .
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 RUN pip3 install -r ./requirements.txt
 
-ENTRYPOINT ["python","./run.py"]
+CMD strace -f -s 512 python3 ./run.py users
