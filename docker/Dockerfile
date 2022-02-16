@@ -5,7 +5,8 @@ WORKDIR /ab-reminder-bot
 COPY . .
 
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-RUN apt-get install strace
+RUN apt-get update
+RUN apt-get install -y strace
 RUN pip3 install -r ./requirements.txt
 
-CMD strace -f -s 512 python3 ./run.py users
+CMD strace -f -s 512 python3.7 ./run.py users
