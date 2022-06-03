@@ -77,7 +77,7 @@ SLACK_REMIND_HAS_UNCHECKED_TEMPLATE = templates_overrides['SLACK_REMIND_HAS_UNCH
 
 SLACK_REMIND_PRIVATE_MESSAGE = templates_overrides['SLACK_REMIND_PRIVATE_MESSAGE'] \
     if is_override_available('SLACK_REMIND_PRIVATE_MESSAGE') \
-    else u'Не забудь заполнить АБ! <{message_link}|Подробности тут>'
+    else u'Не забудь заполнить АБ! [Подробности тут]({message_link})'
 
 SLACK_ACTIVE_THREAD_MESSAGE = templates_overrides['SLACK_ACTIVE_THREAD_MESSAGE'] \
     if is_override_available('SLACK_ACTIVE_THREAD_MESSAGE') else (
