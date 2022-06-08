@@ -34,4 +34,4 @@ class NogaClient:
                 reason = response.json()['error']
             except Exception as ignored:
                 pass
-            logging.warning(f'Message sending error: {reason}')
+            logging.warning(f'Error sending message to {to}: {reason}')
