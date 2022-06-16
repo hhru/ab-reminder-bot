@@ -15,7 +15,7 @@ def generate_users():
 
     teams_users = crab_client.get_users()
     parsed_teams = []
-    force_include = list(settings.crab_settings['force_include_users'])
+    force_include = list(settings.crab_settings['force_include_users_emails'])
 
     for team in teams_users:
         if team['name'] in settings.crab_settings['force_exclude_teams']:
@@ -36,6 +36,8 @@ def generate_users():
                     'userName': username,
                     'userKey': user_info['userKey'],
                     'displayName': user['employee']['fullname'],
+                    'email': user['employee']['email'],
+                    'messenger': user['employee']['slack'],
                 })
         parsed_team.sort(key=lambda item: item['displayName'])
         if len(parsed_team) > 0:
@@ -49,13 +51,16 @@ def generate_users():
 
     if len(force_include) > 0:
         parsed_team = []
-        for username in force_include:
+        for user_email in force_include:
+            username = user_email.split('@')[0]
             if username not in settings.crab_settings['force_exclude_users']:
                 user_info = confluence_client.get_user_info(username)
                 parsed_team.append({
                     'userName': username,
                     'userKey': user_info['userKey'],
-                    'displayName': user_info['displayName']
+                    'displayName': user_info['displayName'],
+                    'email': user_email,
+                    'messenger': None,
                 })
         parsed_team.sort(key=lambda item: item['displayName'])
         parsed_teams.append({

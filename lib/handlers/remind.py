@@ -1,4 +1,5 @@
 import json
+import logging
 
 from bs4 import BeautifulSoup
 
@@ -42,7 +43,11 @@ def remind_users(params_date=None):
                     users_to_remind.append(user)
 
         for user in users_to_remind:
-            noga.send_message(
-                to='@' + user['userName'],
-                message=SLACK_REMIND_PRIVATE_MESSAGE.format(message_link=page['url'])
-            )
+            to = user['email'] or user['messenger']
+            if to is not None:
+                noga.send_message(
+                    to=to,
+                    message=SLACK_REMIND_PRIVATE_MESSAGE.format(message_link=page['url'])
+                )
+            else:
+                logging.error('Error sending message to %s: no contacts available', user['displayName'])
