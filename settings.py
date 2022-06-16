@@ -11,7 +11,6 @@ general_config_file.close()
 config = general_config['ab_reminder_bot']
 
 slack_settings['url'] = config['slack_url']
-slack_settings['token'] = config['slack_token']
 
 confluence_settings['jira_url'] = config['jira_url']
 confluence_settings['wiki_url'] = config['wiki_url']

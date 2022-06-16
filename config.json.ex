@@ -1,7 +1,6 @@
 {
   "ab_reminder_bot": {
     "slack_url": "https://slack.com/api",
-    "slack_token": "slack_oauth_token",
     "jira_url": "jira.hh.ru",
     "wiki_url": "wiki.hh.ru",
     "wiki_username": "wiki_username",
