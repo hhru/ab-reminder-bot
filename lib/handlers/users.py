@@ -60,7 +60,7 @@ def generate_users():
                     'userKey': user_info['userKey'],
                     'displayName': user_info['displayName'],
                     'email': user_email,
-                    'messenger': None,
+                    'messenger': '@' + username,
                 })
         parsed_team.sort(key=lambda item: item['displayName'])
         parsed_teams.append({

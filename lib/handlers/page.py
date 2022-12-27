@@ -27,6 +27,9 @@ def generate_page(params_date=None):
     rows = ''
     task_id = 1
 
+    tech_dep = next(item for item in teams_users if item["name"] == "Технический департамент")
+    teams_users.insert(0, teams_users.pop(teams_users.index(tech_dep)))
+
     for team in teams_users:
         if settings.confluence_settings['add_team_header']:
             rows += TEAM_ROW_TEMPLATE.format(name=team['name'])
